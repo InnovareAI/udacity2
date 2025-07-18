@@ -1,0 +1,38 @@
+2025-07-17 20:47:49,705 - INFO - AgenticProjectManagementWorkflow initialized with enhanced capabilities
+2025-07-17 20:47:49,705 - INFO - Processing Email Router Project for InnovateNext Solutions
+2025-07-17 20:47:49,705 - INFO - Processing project request: 
+        InnovateNext Solutions needs to implement an advanced Email Router system for their project...
+2025-07-17 20:47:49,705 - INFO - Performing enhanced routing analysis
+2025-07-17 20:47:49,709 - INFO - Routing decision: ActionPlanningAgent (confidence: 0.35)
+2025-07-17 20:47:49,709 - INFO - Executing ActionPlanningAgent workflow
+2025-07-17 20:47:49,709 - INFO - Executing comprehensive multi-agent workflow
+2025-07-17 20:47:49,711 - INFO - Performing comprehensive workflow evaluation
+2025-07-17 20:47:49,712 - INFO - Generating final structured output
+2025-07-17 20:47:49,713 - INFO - Workflow execution logged: {'workflow_id': 'workflow_20250717_204749', 'type': 'comprehensive_multi_agent', 'status': 'completed', 'confidence': 0.6476190476190475, 'agents_used': ['AugmentedPromptAgent', 'KnowledgeAugmentedPromptAgent', 'RAGKnowledgePromptAgent', 'ProjectManagerAgent', 'ActionPlanningAgent', 'EvaluationAgent'], 'execution_time': 0.007136}
+🤖 Initializing Enhanced AI-Powered Agentic Workflow for Project Management
+================================================================================
+📧 Processing Email Router Project with Enhanced Workflow...
+
+📊 Generating Comprehensive Workflow Report...
+Traceback (most recent call last):
+  File "/home/ubuntu/udacity_final_project/agentic_workflow.py", line 914, in <module>
+    main()
+  File "/home/ubuntu/udacity_final_project/agentic_workflow.py", line 891, in main
+    json.dump(results, f, indent=2)
+  File "/opt/computersetup/.pyenv/versions/3.11.6/lib/python3.11/json/__init__.py", line 179, in dump
+    for chunk in iterable:
+  File "/opt/computersetup/.pyenv/versions/3.11.6/lib/python3.11/json/encoder.py", line 432, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/opt/computersetup/.pyenv/versions/3.11.6/lib/python3.11/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/opt/computersetup/.pyenv/versions/3.11.6/lib/python3.11/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/opt/computersetup/.pyenv/versions/3.11.6/lib/python3.11/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  [Previous line repeated 1 more time]
+  File "/opt/computersetup/.pyenv/versions/3.11.6/lib/python3.11/json/encoder.py", line 439, in _iterencode
+    o = _default(o)
+        ^^^^^^^^^^^
+  File "/opt/computersetup/.pyenv/versions/3.11.6/lib/python3.11/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type AgentResponse is not JSON serializable

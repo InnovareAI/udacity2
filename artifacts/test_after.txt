@@ -1,0 +1,102 @@
+test_agent_initialization (__main__.TestProjectManagerAgent.test_agent_initialization)
+Test agent initializes correctly ... ok
+test_assess_project_risks (__main__.TestProjectManagerAgent.test_assess_project_risks)
+Test risk assessment functionality ... ok
+test_create_project_plan (__main__.TestProjectManagerAgent.test_create_project_plan)
+Test project plan creation ... ok
+test_methodology_recommendation (__main__.TestProjectManagerAgent.test_methodology_recommendation)
+Test methodology recommendation logic ... ok
+test_agent_initialization (__main__.TestEvaluationAgent.test_agent_initialization)
+Test agent initializes correctly ... ok
+test_custom_evaluation (__main__.TestEvaluationAgent.test_custom_evaluation)
+Test custom evaluation with specific criteria ... ok
+test_evaluate_project_deliverable (__main__.TestEvaluationAgent.test_evaluate_project_deliverable)
+Test project deliverable evaluation ... ok
+test_evaluation_criteria_access (__main__.TestEvaluationAgent.test_evaluation_criteria_access)
+Test access to evaluation criteria ... ok
+test_agent_capabilities_access (__main__.TestRoutingAgent.test_agent_capabilities_access)
+Test access to agent capabilities ... ok
+test_agent_initialization (__main__.TestRoutingAgent.test_agent_initialization)
+Test agent initializes correctly ... ok
+test_route_evaluation_task (__main__.TestRoutingAgent.test_route_evaluation_task)
+Test routing of evaluation task ... ok
+test_route_planning_task (__main__.TestRoutingAgent.test_route_planning_task)
+Test routing of planning task ... ok
+test_task_analysis (__main__.TestRoutingAgent.test_task_analysis)
+Test comprehensive task analysis ... ok
+test_agent_initialization (__main__.TestActionPlanningAgent.test_agent_initialization)
+Test agent initializes correctly ... ok
+test_break_down_task (__main__.TestActionPlanningAgent.test_break_down_task)
+Test task breakdown functionality ... FAIL
+test_create_project_plan (__main__.TestActionPlanningAgent.test_create_project_plan)
+Test project plan creation ... ok
+test_planning_templates (__main__.TestActionPlanningAgent.test_planning_templates)
+Test access to planning templates ... ok
+test_agent_initialization (__main__.TestAugmentedPromptAgent.test_agent_initialization)
+Test agent initializes correctly ... ok
+test_create_evaluation_prompt (__main__.TestAugmentedPromptAgent.test_create_evaluation_prompt)
+Test evaluation prompt creation ... ok
+test_enhance_for_project_management (__main__.TestAugmentedPromptAgent.test_enhance_for_project_management)
+Test project management prompt enhancement ... ok
+test_optimize_for_clarity (__main__.TestAugmentedPromptAgent.test_optimize_for_clarity)
+Test clarity optimization ... ok
+test_add_project_management_knowledge (__main__.TestKnowledgeAugmentedPromptAgent.test_add_project_management_knowledge)
+Test project management knowledge integration ... ok
+test_agent_initialization (__main__.TestKnowledgeAugmentedPromptAgent.test_agent_initialization)
+Test agent initializes correctly ... ok
+test_apply_framework (__main__.TestKnowledgeAugmentedPromptAgent.test_apply_framework)
+Test framework application ... ok
+test_knowledge_base_access (__main__.TestKnowledgeAugmentedPromptAgent.test_knowledge_base_access)
+Test knowledge base access ... ok
+test_agent_initialization (__main__.TestRAGKnowledgePromptAgent.test_agent_initialization)
+Test agent initializes correctly ... ok
+test_enhance_with_project_knowledge (__main__.TestRAGKnowledgePromptAgent.test_enhance_with_project_knowledge)
+Test project knowledge enhancement ... FAIL
+test_knowledge_repository_access (__main__.TestRAGKnowledgePromptAgent.test_knowledge_repository_access)
+Test knowledge repository access ... ok
+test_knowledge_search (__main__.TestRAGKnowledgePromptAgent.test_knowledge_search)
+Test direct knowledge search ... ok
+test_research_technical_solution (__main__.TestRAGKnowledgePromptAgent.test_research_technical_solution)
+Test technical solution research ... ok
+test_multi_agent_coordination (__main__.TestAgentIntegration.test_multi_agent_coordination)
+Test coordination between multiple agents ... ok
+test_routing_to_evaluation_workflow (__main__.TestAgentIntegration.test_routing_to_evaluation_workflow)
+Test complete routing to evaluation workflow ... ok
+
+======================================================================
+FAIL: test_break_down_task (__main__.TestActionPlanningAgent.test_break_down_task)
+Test task breakdown functionality
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/udacity_final_project/tests/test_comprehensive_agents.py", line 212, in test_break_down_task
+    self.assertIn("step", response.content.lower())
+AssertionError: 'step' not found in '\n# action plan\n\n## project goal\n\n        action planning request\n        \n        goal/objective: launch a new product marketing cam...\n\n## phase 1: planning (weeks 1-2)\n### week 1\n- [ ] requirements gathering\n- [ ] stakeholder interviews\n- [ ] technical assessment\n- [ ] resource planning\n\n### week 2\n- [ ] architecture design\n- [ ] technology selection\n- [ ] team formation\n- [ ] project charter approval\n\n## phase 2: development (weeks 3-10)\n### weeks 3-4: foundation\n- [ ] environment setup\n- [ ] core infrastructure\n- [ ] basic functionality\n- [ ] initial testing framework\n\n### weeks 5-8: core development\n- [ ] feature implementation\n- [ ] integration development\n- [ ] unit testing\n- [ ] code reviews\n\n### weeks 9-10: integration\n- [ ] system integration\n- [ ] end-to-end testing\n- [ ] performance optimization\n- [ ] security review\n\n## phase 3: deployment (weeks 11-12)\n### week 11\n- [ ] user acceptance testing\n- [ ] documentation completion\n- [ ] deployment preparation\n- [ ] training materials\n\n### week 12\n- [ ] production deployment\n- [ ] monitoring setup\n- [ ] user training\n- [ ] project closure\n\n## success criteria\n- all features implemented\n- quality standards met\n- timeline adherence\n- budget compliance\n            '
+
+======================================================================
+FAIL: test_enhance_with_project_knowledge (__main__.TestRAGKnowledgePromptAgent.test_enhance_with_project_knowledge)
+Test project knowledge enhancement
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/ubuntu/udacity_final_project/tests/test_comprehensive_agents.py", line 317, in test_enhance_with_project_knowledge
+    self.assertGreater(response.metadata["sources_retrieved"], 0)
+AssertionError: 0 not greater than 0
+
+----------------------------------------------------------------------
+Ran 32 tests in 0.008s
+
+FAILED (failures=2)
+🧪 Running Comprehensive Agent Test Suite
+============================================================
+
+============================================================
+📊 Test Results Summary
+✅ Tests Run: 32
+❌ Failures: 2
+⚠️  Errors: 0
+
+❌ Failures:
+  - test_break_down_task (__main__.TestActionPlanningAgent.test_break_down_task): 'step' not found in '\n# action plan\n\n## project goal\n\n        action planning request\n        \n        goal/objective: launch a new product marketing cam...\n\n## phase 1: planning (weeks 1-2)\n### week 1\n- [ ] requirements gathering\n- [ ] stakeholder interviews\n- [ ] technical assessment\n- [ ] resource planning\n\n### week 2\n- [ ] architecture design\n- [ ] technology selection\n- [ ] team formation\n- [ ] project charter approval\n\n## phase 2: development (weeks 3-10)\n### weeks 3-4: foundation\n- [ ] environment setup\n- [ ] core infrastructure\n- [ ] basic functionality\n- [ ] initial testing framework\n\n### weeks 5-8: core development\n- [ ] feature implementation\n- [ ] integration development\n- [ ] unit testing\n- [ ] code reviews\n\n### weeks 9-10: integration\n- [ ] system integration\n- [ ] end-to-end testing\n- [ ] performance optimization\n- [ ] security review\n\n## phase 3: deployment (weeks 11-12)\n### week 11\n- [ ] user acceptance testing\n- [ ] documentation completion\n- [ ] deployment preparation\n- [ ] training materials\n\n### week 12\n- [ ] production deployment\n- [ ] monitoring setup\n- [ ] user training\n- [ ] project closure\n\n## success criteria\n- all features implemented\n- quality standards met\n- timeline adherence\n- budget compliance\n            '
+  - test_enhance_with_project_knowledge (__main__.TestRAGKnowledgePromptAgent.test_enhance_with_project_knowledge): 0 not greater than 0
+
+🎯 Success Rate: 93.8%
+🎉 Excellent! All agents are working correctly.

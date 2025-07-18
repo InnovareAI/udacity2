@@ -1,0 +1,44 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.6, pytest-8.4.1, pluggy-1.6.0 -- /home/ubuntu/udacity_final_project/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/ubuntu/udacity_final_project
+plugins: anyio-4.9.0
+collecting ... collected 32 items
+
+tests/test_comprehensive_agents.py::TestProjectManagerAgent::test_agent_initialization PASSED [  3%]
+tests/test_comprehensive_agents.py::TestProjectManagerAgent::test_assess_project_risks PASSED [  6%]
+tests/test_comprehensive_agents.py::TestProjectManagerAgent::test_create_project_plan PASSED [  9%]
+tests/test_comprehensive_agents.py::TestProjectManagerAgent::test_methodology_recommendation PASSED [ 12%]
+tests/test_comprehensive_agents.py::TestEvaluationAgent::test_agent_initialization PASSED [ 15%]
+tests/test_comprehensive_agents.py::TestEvaluationAgent::test_custom_evaluation PASSED [ 18%]
+tests/test_comprehensive_agents.py::TestEvaluationAgent::test_evaluate_project_deliverable PASSED [ 21%]
+tests/test_comprehensive_agents.py::TestEvaluationAgent::test_evaluation_criteria_access PASSED [ 25%]
+tests/test_comprehensive_agents.py::TestRoutingAgent::test_agent_capabilities_access PASSED [ 28%]
+tests/test_comprehensive_agents.py::TestRoutingAgent::test_agent_initialization PASSED [ 31%]
+tests/test_comprehensive_agents.py::TestRoutingAgent::test_route_evaluation_task PASSED [ 34%]
+tests/test_comprehensive_agents.py::TestRoutingAgent::test_route_planning_task PASSED [ 37%]
+tests/test_comprehensive_agents.py::TestRoutingAgent::test_task_analysis PASSED [ 40%]
+tests/test_comprehensive_agents.py::TestActionPlanningAgent::test_agent_initialization PASSED [ 43%]
+tests/test_comprehensive_agents.py::TestActionPlanningAgent::test_break_down_task PASSED [ 46%]
+tests/test_comprehensive_agents.py::TestActionPlanningAgent::test_create_project_plan PASSED [ 50%]
+tests/test_comprehensive_agents.py::TestActionPlanningAgent::test_planning_templates PASSED [ 53%]
+tests/test_comprehensive_agents.py::TestAugmentedPromptAgent::test_agent_initialization PASSED [ 56%]
+tests/test_comprehensive_agents.py::TestAugmentedPromptAgent::test_create_evaluation_prompt PASSED [ 59%]
+tests/test_comprehensive_agents.py::TestAugmentedPromptAgent::test_enhance_for_project_management PASSED [ 62%]
+tests/test_comprehensive_agents.py::TestAugmentedPromptAgent::test_optimize_for_clarity PASSED [ 65%]
+tests/test_comprehensive_agents.py::TestKnowledgeAugmentedPromptAgent::test_add_project_management_knowledge PASSED [ 68%]
+tests/test_comprehensive_agents.py::TestKnowledgeAugmentedPromptAgent::test_agent_initialization PASSED [ 71%]
+tests/test_comprehensive_agents.py::TestKnowledgeAugmentedPromptAgent::test_apply_framework PASSED [ 75%]
+tests/test_comprehensive_agents.py::TestKnowledgeAugmentedPromptAgent::test_knowledge_base_access PASSED [ 78%]
+tests/test_comprehensive_agents.py::TestRAGKnowledgePromptAgent::test_agent_initialization PASSED [ 81%]
+tests/test_comprehensive_agents.py::TestRAGKnowledgePromptAgent::test_enhance_with_project_knowledge PASSED [ 84%]
+tests/test_comprehensive_agents.py::TestRAGKnowledgePromptAgent::test_knowledge_repository_access PASSED [ 87%]
+tests/test_comprehensive_agents.py::TestRAGKnowledgePromptAgent::test_knowledge_search PASSED [ 90%]
+tests/test_comprehensive_agents.py::TestRAGKnowledgePromptAgent::test_research_technical_solution PASSED [ 93%]
+tests/test_comprehensive_agents.py::TestAgentIntegration::test_multi_agent_coordination PASSED [ 96%]
+tests/test_comprehensive_agents.py::TestAgentIntegration::test_routing_to_evaluation_workflow PASSED [100%]
+
+============================== 32 passed in 1.15s ==============================
+=== TEST SUMMARY ===
+................................                                         [100%]
+32 passed in 1.05s

@@ -1,0 +1,109 @@
+🚀 Starting Agent Testing Suite
+==================================================
+🧪 Testing ProjectManagerAgent...
+✅ Success: True
+📊 Confidence: 0.76
+📝 Content preview: 
+# Project Management Analysis
+
+Based on the request: 
+        Project Management Task: comprehensive_planning
+        
+        Project Details:
+        D...
+
+## Project Overview
+This project requires...
+
+🧪 Testing AugmentedPromptAgent...
+✅ Success: True
+📊 Confidence: 0.54
+📝 Content preview: 
+# AugmentedPromptAgent Response
+
+Thank you for your request: 
+        PROMPT ENHANCEMENT REQUEST
+        
+        Original Prompt:
+        Create a project plan ...
+
+This is a mock response generated...
+
+🧪 Testing KnowledgeAugmentedPromptAgent...
+✅ Success: True
+📊 Confidence: 0.49
+📝 Content preview: 
+# KnowledgeAugmentedPromptAgent Response
+
+Thank you for your request: 
+        KNOWLEDGE AUGMENTATION REQUEST
+        
+        Original Content:
+        How to manage pro...
+
+This is a mock response ...
+
+🧪 Testing RAGKnowledgePromptAgent...
+✅ Success: True
+📊 Confidence: 0.54
+📝 Content preview: 
+# RAGKnowledgePromptAgent Response
+
+Thank you for your request: 
+        RAG KNOWLEDGE REQUEST
+        
+        Query: What are the best practices for project plann...
+
+This is a mock response genera...
+
+🧪 Testing EvaluationAgent...
+✅ Success: True
+📊 Confidence: 0.76
+📝 Content preview: 
+# Quality Evaluation Report
+
+## Item Evaluated
+
+        EVALUATION REQUEST
+        
+        Item to Evaluate:
+        A comprehensive project plan with timeline, resources, and risk assessment
+      ...
+
+🧪 Testing RoutingAgent...
+✅ Success: True
+📊 Confidence: 0.57
+🎯 Recommended agent: EvaluationAgent
+📝 Content preview: 
+# Task Routing Analysis
+
+## Task Analysis
+Input: 
+        TASK ROUTING REQUEST
+        
+        Task Description: I need to evaluate the quality of o...
+
+## Routing Recommendation
+**Primary Agent**: ...
+
+🧪 Testing ActionPlanningAgent...
+✅ Success: True
+📊 Confidence: 0.63
+📝 Content preview: 
+# Action Plan
+
+## Project Goal
+
+        ACTION PLANNING REQUEST
+        
+        Goal/Objective: Implement a customer feedback syst...
+
+## Phase 1: Planning (Weeks 1-2)
+### Week 1
+- [ ] Requirements ...
+
+==================================================
+📊 Test Results Summary
+✅ Passed: 7/7
+❌ Failed: 0/7
+🎉 All tests passed! Agents are working correctly.

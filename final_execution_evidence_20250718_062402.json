@@ -1,0 +1,467 @@
+{
+  "success": true,
+  "workflow_id": "workflow_20250718_062402",
+  "timestamp": "2025-07-18T06:24:02.030522",
+  "request": "\nCreate a comprehensive project plan for developing an email routing system with the following requirements:\n1. Automatically categorize incoming emails based on content\n2. Route emails to appropriate departments (sales, support, billing)\n3. Provide real-time analytics and reporting dashboard\n4. Integrate with existing CRM and ticketing systems\n5. Handle high volume processing (10,000+ emails/hour)\n6. Include proper security and compliance measures\n\nThe system should be scalable, maintainable, and include comprehensive testing.\n",
+  "context": {
+    "priority": "high",
+    "timeline": "4 months",
+    "budget": "flexible",
+    "stakeholders": [
+      "IT Department",
+      "Customer Service",
+      "Sales",
+      "Management"
+    ]
+  },
+  "results": {
+    "workflow_execution": {
+      "id": "workflow_20250718_062402",
+      "timestamp": "2025-07-18T06:24:02.030522",
+      "type": "enhanced_agentic_workflow",
+      "status": "completed",
+      "duration_info": "Completed in 4 steps",
+      "overall_confidence": 0.5389609458243687
+    },
+    "request_analysis": {
+      "original_request": "\nCreate a comprehensive project plan for developing an email routing system with the following requirements:\n1. Automatically categorize incoming emails based on content\n2. Route emails to appropriate departments (sales, support, billing)\n3. Provide real-time analytics and reporting dashboard\n4. Integrate with existing CRM and ticketing systems\n5. Handle high volume processing (10,000+ emails/hour)\n6. Include proper security and compliance measures\n\nThe system should be scalable, maintainable, and include comprehensive testing.\n",
+      "processed_context": {
+        "priority": "high",
+        "timeline": "4 months",
+        "budget": "flexible",
+        "stakeholders": [
+          "IT Department",
+          "Customer Service",
+          "Sales",
+          "Management"
+        ]
+      },
+      "routing_decision": {
+        "agent_type": "RoutingAgent",
+        "primary_agent": "DirectPromptAgent",
+        "routing_confidence": 0.7558437832974751,
+        "similarity_scores": {
+          "ProjectManagerAgent": 0.7535371411163344,
+          "ActionPlanningAgent": 0.7444832954196441,
+          "EvaluationAgent": 0.7531266026546902,
+          "DirectPromptAgent": 0.7558437832974751
+        },
+        "alternatives": [
+          {
+            "agent": "ProjectManagerAgent",
+            "similarity": 0.7535371411163344
+          },
+          {
+            "agent": "EvaluationAgent",
+            "similarity": 0.7531266026546902
+          },
+          {
+            "agent": "ActionPlanningAgent",
+            "similarity": 0.7444832954196441
+          }
+        ],
+        "embedding_model": "text-embedding-3-large",
+        "routing_method": "cosine_similarity"
+      },
+      "complexity_assessment": "medium"
+    },
+    "agent_coordination": {
+      "agents_involved": [
+        "RoutingAgent",
+        "DirectPromptAgent",
+        "EvaluationAgent",
+        "SupportFunctions"
+      ],
+      "processing_steps": 4,
+      "coordination_pattern": "step_wise_routing",
+      "completed_steps": [
+        {
+          "step_name": "routing_analysis",
+          "agent_used": "RoutingAgent",
+          "duration_seconds": 0.126408,
+          "timestamp": "2025-07-18T06:24:01.903615",
+          "success": true,
+          "confidence": 0.8558437832974751
+        },
+        {
+          "step_name": "primary_processing",
+          "agent_used": "DirectPromptAgent",
+          "duration_seconds": 3.4e-05,
+          "timestamp": "2025-07-18T06:24:02.030099",
+          "success": true,
+          "confidence": 0.0
+        },
+        {
+          "step_name": "quality_evaluation",
+          "agent_used": "EvaluationAgent",
+          "duration_seconds": 0.000197,
+          "timestamp": "2025-07-18T06:24:02.030164",
+          "success": true,
+          "confidence": 0.5
+        },
+        {
+          "step_name": "support_integration",
+          "agent_used": "SupportFunctions",
+          "duration_seconds": 5e-05,
+          "timestamp": "2025-07-18T06:24:02.030403",
+          "success": true,
+          "confidence": 0.8
+        },
+        {
+          "step_name": "output_structuring",
+          "agent_used": "WorkflowOrchestrator",
+          "duration_seconds": 5.5e-05,
+          "timestamp": "2025-07-18T06:24:02.030487",
+          "success": true,
+          "confidence": 0.8
+        }
+      ]
+    },
+    "deliverables": {
+      "primary_output": "Error: No prompt provided",
+      "user_stories": [
+        "As a user, I want to access the system efficiently",
+        "As an admin, I want to manage system configurations",
+        "As a stakeholder, I want to view progress reports"
+      ],
+      "product_features": [
+        "Core system functionality",
+        "User interface components",
+        "Data management features",
+        "Integration capabilities",
+        "Security and authentication"
+      ],
+      "engineering_tasks": [
+        "Set up development environment",
+        "Implement core business logic",
+        "Develop user interface components",
+        "Create database schema and models",
+        "Implement API endpoints",
+        "Set up testing framework",
+        "Configure deployment pipeline"
+      ],
+      "evaluation_results": {
+        "agent_type": "EvaluationAgent",
+        "evaluation_type": "project_deliverable",
+        "overall_score": 5.0,
+        "iterations_performed": 3,
+        "corrections_enabled": true,
+        "correction_history": [
+          {
+            "iteration": 1,
+            "previous_score": 5.0,
+            "new_score": 5.0,
+            "corrections_applied": [
+              "Address weakness: JSON parsing failed",
+              "Implement: Review evaluation format"
+            ],
+            "improvement": 0.0
+          },
+          {
+            "iteration": 2,
+            "previous_score": 5.0,
+            "new_score": 5.0,
+            "corrections_applied": [
+              "Address weakness: JSON parsing failed",
+              "Implement: Review evaluation format"
+            ],
+            "improvement": 0.0
+          },
+          {
+            "iteration": 3,
+            "previous_score": 5.0,
+            "new_score": 5.0,
+            "corrections_applied": [
+              "Address weakness: JSON parsing failed",
+              "Implement: Review evaluation format"
+            ],
+            "improvement": 0.0
+          }
+        ],
+        "final_item": "Error: No prompt provided\n\nCORRECTIONS APPLIED:\n- Address weakness: JSON parsing failed\n- Implement: Review evaluation format\n\nCORRECTIONS APPLIED:\n- Address weakness: JSON parsing failed\n- Implement: Review evaluation format\n\nCORRECTIONS APPLIED:\n- Address weakness: JSON parsing failed\n- Implement: Review evaluation format"
+      },
+      "support_analysis": {
+        "product_manager": {
+          "function": "product_manager",
+          "timestamp": "2025-07-18T06:24:02.030449",
+          "task_type": "product_planning",
+          "analysis": {
+            "product_strategy": {
+              "market_analysis": "Analyze target market and competitive landscape",
+              "value_proposition": "Define unique value proposition and key differentiators",
+              "user_personas": "Identify and define target user personas",
+              "success_metrics": "Define key performance indicators and success metrics"
+            },
+            "requirements_analysis": {
+              "functional_requirements": [],
+              "non_functional_requirements": [],
+              "user_stories": [
+                {
+                  "story": "As a user, I want to access the system easily",
+                  "priority": "high"
+                },
+                {
+                  "story": "As an admin, I want to manage user permissions",
+                  "priority": "medium"
+                },
+                {
+                  "story": "As a stakeholder, I want to view progress reports",
+                  "priority": "medium"
+                }
+              ],
+              "acceptance_criteria": [
+                "All functional requirements are implemented and tested",
+                "System meets performance benchmarks",
+                "Security requirements are validated",
+                "User acceptance testing is completed successfully"
+              ]
+            },
+            "roadmap_planning": {
+              "phases": [
+                {
+                  "phase": "Discovery",
+                  "duration": "2 weeks",
+                  "focus": "Requirements and research"
+                },
+                {
+                  "phase": "Design",
+                  "duration": "3 weeks",
+                  "focus": "Product design and prototyping"
+                },
+                {
+                  "phase": "Development",
+                  "duration": "8 weeks",
+                  "focus": "Implementation and testing"
+                },
+                {
+                  "phase": "Launch",
+                  "duration": "2 weeks",
+                  "focus": "Deployment and go-to-market"
+                }
+              ],
+              "milestones": [
+                {
+                  "milestone": "Requirements Finalized",
+                  "target": "Week 2"
+                },
+                {
+                  "milestone": "Design Approved",
+                  "target": "Week 5"
+                },
+                {
+                  "milestone": "MVP Completed",
+                  "target": "Week 10"
+                },
+                {
+                  "milestone": "Product Launch",
+                  "target": "Week 15"
+                }
+              ],
+              "dependencies": [
+                {
+                  "dependency": "External API integration",
+                  "type": "technical",
+                  "impact": "high"
+                },
+                {
+                  "dependency": "Stakeholder approval",
+                  "type": "business",
+                  "impact": "medium"
+                },
+                {
+                  "dependency": "Resource availability",
+                  "type": "resource",
+                  "impact": "high"
+                }
+              ],
+              "risk_assessment": [
+                {
+                  "risk": "Technical complexity",
+                  "probability": "medium",
+                  "impact": "high",
+                  "mitigation": "Proof of concept development"
+                },
+                {
+                  "risk": "Market changes",
+                  "probability": "low",
+                  "impact": "high",
+                  "mitigation": "Regular market analysis"
+                },
+                {
+                  "risk": "Resource constraints",
+                  "probability": "medium",
+                  "impact": "medium",
+                  "mitigation": "Flexible resource planning"
+                }
+              ]
+            },
+            "stakeholder_management": {
+              "stakeholder_mapping": {
+                "primary": [
+                  "Product Owner",
+                  "Development Team",
+                  "End Users"
+                ],
+                "secondary": [
+                  "Marketing",
+                  "Sales",
+                  "Support"
+                ],
+                "influence_matrix": {
+                  "high_influence_high_interest": [
+                    "Product Owner"
+                  ],
+                  "high_influence_low_interest": [
+                    "Executive Sponsor"
+                  ]
+                }
+              },
+              "communication_plan": {
+                "weekly_updates": [
+                  "Development Team",
+                  "Product Owner"
+                ],
+                "monthly_reviews": [
+                  "All Stakeholders"
+                ],
+                "milestone_reports": [
+                  "Executive Sponsors",
+                  "Key Stakeholders"
+                ]
+              },
+              "feedback_loops": [
+                "Weekly sprint reviews with development team",
+                "Monthly stakeholder feedback sessions",
+                "User testing and feedback collection",
+                "Continuous feedback through product analytics"
+              ]
+            }
+          },
+          "recommendations": [
+            "Prioritize user stories based on business value and technical complexity",
+            "Establish regular feedback loops with key stakeholders",
+            "Implement agile development methodology for flexibility",
+            "Create comprehensive testing strategy including user acceptance testing"
+          ],
+          "next_steps": [
+            "Finalize product requirements and user stories",
+            "Create detailed project timeline and resource allocation",
+            "Set up development environment and team structure",
+            "Begin discovery phase with stakeholder interviews"
+          ],
+          "confidence": 0.85
+        }
+      }
+    },
+    "quality_metrics": {
+      "overall_score": 5.0,
+      "confidence_distribution": [
+        0.8558437832974751,
+        0.0,
+        0.5,
+        0.8
+      ],
+      "validation_results": {
+        "agent_type": "EvaluationAgent",
+        "evaluation_type": "project_deliverable",
+        "overall_score": 5.0,
+        "iterations_performed": 3,
+        "corrections_enabled": true,
+        "correction_history": [
+          {
+            "iteration": 1,
+            "previous_score": 5.0,
+            "new_score": 5.0,
+            "corrections_applied": [
+              "Address weakness: JSON parsing failed",
+              "Implement: Review evaluation format"
+            ],
+            "improvement": 0.0
+          },
+          {
+            "iteration": 2,
+            "previous_score": 5.0,
+            "new_score": 5.0,
+            "corrections_applied": [
+              "Address weakness: JSON parsing failed",
+              "Implement: Review evaluation format"
+            ],
+            "improvement": 0.0
+          },
+          {
+            "iteration": 3,
+            "previous_score": 5.0,
+            "new_score": 5.0,
+            "corrections_applied": [
+              "Address weakness: JSON parsing failed",
+              "Implement: Review evaluation format"
+            ],
+            "improvement": 0.0
+          }
+        ],
+        "final_item": "Error: No prompt provided\n\nCORRECTIONS APPLIED:\n- Address weakness: JSON parsing failed\n- Implement: Review evaluation format\n\nCORRECTIONS APPLIED:\n- Address weakness: JSON parsing failed\n- Implement: Review evaluation format\n\nCORRECTIONS APPLIED:\n- Address weakness: JSON parsing failed\n- Implement: Review evaluation format"
+      },
+      "step_success_rate": 1.0
+    },
+    "metadata": {
+      "processing_metadata": {
+        "total_steps": 4,
+        "successful_steps": 4,
+        "agents_used": [
+          "DirectPromptAgent",
+          "SupportFunctions",
+          "RoutingAgent",
+          "EvaluationAgent"
+        ]
+      },
+      "system_info": {
+        "version": "2.0",
+        "capabilities": "Enhanced multi-agent workflow with step-wise routing and support functions"
+      }
+    }
+  },
+  "completed_steps": [
+    {
+      "step_name": "routing_analysis",
+      "agent_used": "RoutingAgent",
+      "duration_seconds": 0.126408,
+      "timestamp": "2025-07-18T06:24:01.903615",
+      "success": true,
+      "confidence": 0.8558437832974751
+    },
+    {
+      "step_name": "primary_processing",
+      "agent_used": "DirectPromptAgent",
+      "duration_seconds": 3.4e-05,
+      "timestamp": "2025-07-18T06:24:02.030099",
+      "success": true,
+      "confidence": 0.0
+    },
+    {
+      "step_name": "quality_evaluation",
+      "agent_used": "EvaluationAgent",
+      "duration_seconds": 0.000197,
+      "timestamp": "2025-07-18T06:24:02.030164",
+      "success": true,
+      "confidence": 0.5
+    },
+    {
+      "step_name": "support_integration",
+      "agent_used": "SupportFunctions",
+      "duration_seconds": 5e-05,
+      "timestamp": "2025-07-18T06:24:02.030403",
+      "success": true,
+      "confidence": 0.8
+    },
+    {
+      "step_name": "output_structuring",
+      "agent_used": "WorkflowOrchestrator",
+      "duration_seconds": 5.5e-05,
+      "timestamp": "2025-07-18T06:24:02.030487",
+      "success": true,
+      "confidence": 0.8
+    }
+  ],
+  "overall_confidence": 0.5389609458243687,
+  "summary": "Workflow completed successfully with 5 steps and 0.54 confidence"
+}
