@@ -1,4 +1,5 @@
 
+
 """
 Evaluation Agent - Comprehensive evaluation and assessment capabilities
 Enhanced with specialized evaluation prompts and scoring systems
@@ -18,8 +19,10 @@ class EvaluationAgent(BaseAgent):
     - Improvement recommendations
     """
     
-    def __init__(self, api_key: str = None):
+    def __init__(self, api_key: str = None, **kwargs):
         super().__init__(api_key)
+        self.persona = kwargs.get('persona', "senior quality assurance specialist")
+        self.criteria = kwargs.get('criteria', {})
         self.capabilities = [
             "quality_assessment", "performance_evaluation", "deliverable_review",
             "compliance_checking", "feedback_generation", "scoring_systems"
@@ -79,7 +82,7 @@ class EvaluationAgent(BaseAgent):
         scoring_scale = input_data.get('scoring_scale', '1-10')
         context = input_data.get('context', '')
         
-        system_prompt = """You are a senior quality assurance specialist and evaluation expert with extensive experience in:
+        system_prompt = f"""You are a {self.persona} and evaluation expert with extensive experience in:
 
 - Comprehensive quality assessment across multiple domains
 - Objective scoring and measurement systems
@@ -187,11 +190,30 @@ Always provide specific examples, quantitative scores, and concrete improvement 
                 "individual_scores": scores,
                 "overall_score": overall_score,
                 "recommendation_priority": self._assess_priority(response_content),
-                "compliance_status": self._assess_compliance(response_content)
+                "compliance_status": self._assess_compliance(response_content),
+                "persona": self.persona
             },
             confidence_score=confidence_score,
             reasoning=f"Conducted comprehensive {evaluation_type} evaluation using {len(criteria)} criteria with {scoring_scale} scoring scale"
         )
+    
+    def evaluate(self, item_to_evaluate: str, evaluation_type: str = "project_deliverable", 
+                scoring_scale: str = "1-10", context: str = "") -> AgentResponse:
+        """
+        Main evaluate method for Udacity specification compliance
+        
+        Args:
+            item_to_evaluate: The item/content to evaluate
+            evaluation_type: Type of evaluation
+            scoring_scale: Scoring scale to use
+            context: Additional context for evaluation
+        """
+        return self.process({
+            'item_to_evaluate': item_to_evaluate,
+            'evaluation_type': evaluation_type,
+            'scoring_scale': scoring_scale,
+            'context': context
+        })
     
     def evaluate_project_deliverable(self, deliverable_content: str, context: str = "") -> AgentResponse:
         """Evaluate a project deliverable"""
@@ -297,3 +319,14 @@ Always provide specific examples, quantitative scores, and concrete improvement 
         if evaluation_type not in self.evaluation_criteria:
             self.evaluation_criteria[evaluation_type] = {}
         self.evaluation_criteria[evaluation_type].update(criteria)
+    
+    # Additional methods for test compatibility
+    def custom_evaluation(self, content: str, criteria: Dict[str, str], scoring_scale: str = "1-10") -> AgentResponse:
+        """Perform custom evaluation with specific criteria - alias for compatibility"""
+        return self.process({
+            'item_to_evaluate': content,
+            'evaluation_type': 'custom',
+            'criteria': criteria,
+            'scoring_scale': scoring_scale
+        })
+

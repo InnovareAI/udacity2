@@ -1,4 +1,5 @@
 
+
 """
 Enhanced AI-Powered Agentic Workflow for Project Management
 Phase 2: Complete Workflow Implementation with Support Functions
@@ -12,6 +13,7 @@ import json
 from typing import Dict, Any, List, Optional, Tuple
 from datetime import datetime
 import logging
+from pathlib import Path
 from workflow_agents import (
     ProjectManagerAgent,
     AugmentedPromptAgent,
@@ -248,6 +250,9 @@ class AgenticProjectManagementWorkflow:
         self.support_functions = WorkflowSupportFunctions()
         self.evaluation_orchestrator = EvaluationAgentOrchestrator(self.api_key)
         
+        # Load Product-Spec-Email-Router.txt with proper file path handling
+        self.product_spec_content = self._load_product_spec()
+        
         # Workflow state and configuration
         self.workflow_history = []
         self.current_project = None
@@ -260,6 +265,25 @@ class AgenticProjectManagementWorkflow:
         }
         
         logger.info("AgenticProjectManagementWorkflow initialized with enhanced capabilities")
+    
+    def _load_product_spec(self) -> str:
+        """Load Product-Spec-Email-Router.txt with proper file path handling"""
+        try:
+            # Use Path to get the directory of the current file
+            current_dir = Path(__file__).parent
+            product_spec_path = current_dir / "Product-Spec-Email-Router.txt"
+            
+            if product_spec_path.exists():
+                with open(product_spec_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                logger.info(f"Successfully loaded Product-Spec-Email-Router.txt from {product_spec_path}")
+                return content
+            else:
+                logger.warning(f"Product-Spec-Email-Router.txt not found at {product_spec_path}")
+                return "Product specification file not found"
+        except Exception as e:
+            logger.error(f"Error loading Product-Spec-Email-Router.txt: {str(e)}")
+            return "Error loading product specification"
     
     def process_project_request(self, request: str, context: Dict[str, Any] = None) -> Dict[str, Any]:
         """
@@ -306,7 +330,7 @@ class AgenticProjectManagementWorkflow:
         """Perform enhanced routing with comprehensive analysis"""
         logger.info("Performing enhanced routing analysis")
         
-        routing_response = self.routing.route_task(
+        routing_response = self.routing.route(
             request, 
             json.dumps(context),
             context.get("priority", "medium")
@@ -360,7 +384,7 @@ class AgenticProjectManagementWorkflow:
         
         # Step 1: Knowledge-enhanced prompt preparation
         if self.workflow_config["enable_knowledge_augmentation"]:
-            knowledge_enhanced = self.knowledge_augmented.add_project_management_knowledge(request)
+            knowledge_enhanced = self.knowledge_augmented.respond(request)
             enhanced_request = knowledge_enhanced.content
             results['steps'].append(self._create_step_record('knowledge_enhancement', 'KnowledgeAugmentedPromptAgent', knowledge_enhanced))
             results['agents_used'].append('KnowledgeAugmentedPromptAgent')
@@ -426,7 +450,7 @@ class AgenticProjectManagementWorkflow:
         results['confidence_scores'].append(enhanced_prompt.confidence_score)
         
         # Step 2: Knowledge augmentation with planning expertise
-        knowledge_enhanced = self.knowledge_augmented.add_project_management_knowledge(enhanced_prompt.content)
+        knowledge_enhanced = self.knowledge_augmented.respond(enhanced_prompt.content)
         results['steps'].append(self._create_step_record('knowledge_enhancement', 'KnowledgeAugmentedPromptAgent', knowledge_enhanced))
         results['agents_used'].append('KnowledgeAugmentedPromptAgent')
         results['confidence_scores'].append(knowledge_enhanced.confidence_score)
@@ -491,12 +515,12 @@ class AgenticProjectManagementWorkflow:
         
         # Step 2: Comprehensive evaluation
         evaluation_type = context.get('evaluation_type', 'project_deliverable')
-        evaluation_response = self.evaluation.process({
-            'item_to_evaluate': request,
-            'evaluation_type': evaluation_type,
-            'scoring_scale': context.get('scoring_scale', '1-10'),
-            'context': json.dumps(context)
-        })
+        evaluation_response = self.evaluation.evaluate(
+            request,
+            evaluation_type,
+            context.get('scoring_scale', '1-10'),
+            json.dumps(context)
+        )
         results['steps'].append(self._create_step_record('comprehensive_evaluation', 'EvaluationAgent', evaluation_response))
         results['agents_used'].append('EvaluationAgent')
         results['confidence_scores'].append(evaluation_response.confidence_score)
@@ -542,7 +566,7 @@ class AgenticProjectManagementWorkflow:
         results['confidence_scores'].append(enhanced_prompt.confidence_score)
         
         # Step 2: Domain knowledge integration
-        knowledge_enhanced = self.knowledge_augmented.add_project_management_knowledge(enhanced_prompt.content)
+        knowledge_enhanced = self.knowledge_augmented.respond(enhanced_prompt.content)
         results['steps'].append(self._create_step_record('knowledge_enhancement', 'KnowledgeAugmentedPromptAgent', knowledge_enhanced))
         results['agents_used'].append('KnowledgeAugmentedPromptAgent')
         results['confidence_scores'].append(knowledge_enhanced.confidence_score)
@@ -677,25 +701,24 @@ class AgenticProjectManagementWorkflow:
     def _create_step_record(self, step_name: str, agent_name: str, agent_response) -> Dict[str, Any]:
         """Create standardized step record"""
         return {
-            'step': step_name,
-            'agent': agent_name,
-            'output': agent_response.content,
-            'confidence': agent_response.confidence_score,
-            'metadata': agent_response.metadata,
-            'reasoning': agent_response.reasoning,
-            'timestamp': datetime.now().isoformat()
+            "step": step_name,
+            "agent": agent_name,
+            "success": agent_response.success,
+            "output": agent_response.content,
+            "confidence": agent_response.confidence_score,
+            "metadata": agent_response.metadata,
+            "timestamp": datetime.now().isoformat()
         }
     
     def _extract_recommendations(self, steps: List[Dict[str, Any]]) -> List[str]:
         """Extract recommendations from workflow steps"""
         recommendations = []
         for step in steps:
-            content = step.get('output', '').lower()
-            if 'recommend' in content or 'suggest' in content:
-                # Simple extraction - in production, this would be more sophisticated
-                lines = step.get('output', '').split('\n')
+            if "recommendation" in step.get("output", "").lower():
+                # Simple extraction - in production would use more sophisticated NLP
+                lines = step["output"].split('\n')
                 for line in lines:
-                    if any(word in line.lower() for word in ['recommend', 'suggest', 'should', 'consider']):
+                    if "recommend" in line.lower():
                         recommendations.append(line.strip())
         return recommendations[:5]  # Limit to top 5
     
@@ -703,228 +726,56 @@ class AgenticProjectManagementWorkflow:
         """Extract next steps from workflow steps"""
         next_steps = []
         for step in steps:
-            content = step.get('output', '').lower()
-            if 'next step' in content or 'action' in content:
-                lines = step.get('output', '').split('\n')
+            if "next step" in step.get("output", "").lower():
+                lines = step["output"].split('\n')
                 for line in lines:
-                    if any(word in line.lower() for word in ['next', 'action', 'implement', 'execute']):
+                    if "next" in line.lower() and ("step" in line.lower() or "action" in line.lower()):
                         next_steps.append(line.strip())
         return next_steps[:5]  # Limit to top 5
     
     def _create_error_response(self, error_message: str) -> Dict[str, Any]:
         """Create standardized error response"""
         return {
+            "success": False,
+            "error": error_message,
+            "timestamp": datetime.now().isoformat(),
             "workflow_execution": {
-                "id": f"error_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
-                "timestamp": datetime.now().isoformat(),
-                "status": "error",
-                "error_message": error_message
-            },
-            "success": False
+                "status": "failed",
+                "error_details": error_message
+            }
         }
     
     def _log_workflow_execution(self, structured_output: Dict[str, Any]):
-        """Log workflow execution for monitoring and improvement"""
-        execution_summary = {
-            "workflow_id": structured_output["workflow_execution"]["id"],
-            "type": structured_output["workflow_execution"]["type"],
-            "status": structured_output["workflow_execution"]["status"],
-            "confidence": structured_output["workflow_execution"]["overall_confidence"],
-            "agents_used": structured_output["agent_coordination"]["agents_involved"],
-            "execution_time": structured_output["workflow_execution"].get("execution_time_seconds", 0)
-        }
+        """Log workflow execution for monitoring and analysis"""
+        workflow_id = structured_output["workflow_execution"]["id"]
+        status = structured_output["workflow_execution"]["status"]
+        logger.info(f"Workflow {workflow_id} completed with status: {status}")
         
-        self.workflow_history.append(execution_summary)
-        logger.info(f"Workflow execution logged: {execution_summary}")
-    
-    def handle_email_router_project(self) -> Dict[str, Any]:
-        """
-        Handle the specific Email Router project as mentioned in the requirements.
-        This demonstrates the enhanced workflow with comprehensive capabilities.
-        """
-        logger.info("Processing Email Router Project for InnovateNext Solutions")
-        
-        email_router_request = """
-        InnovateNext Solutions needs to implement an advanced Email Router system for their project management workflow.
-        
-        Project Requirements:
-        - Automatically route incoming project-related emails to appropriate team members based on content analysis
-        - Categorize emails by project type, priority, urgency, and department using AI classification
-        - Integrate seamlessly with existing project management tools (Jira, Asana, Microsoft Project)
-        - Provide comprehensive analytics and reporting on email routing patterns and efficiency
-        - Ensure enterprise-level security and compliance with GDPR, SOX, and company data policies
-        - Support high volume email processing (10,000+ emails/day) with real-time routing decisions
-        - Include machine learning capabilities for continuous improvement of routing accuracy
-        - Provide user-friendly dashboard for monitoring and manual override capabilities
-        
-        Technical Specifications:
-        - Cloud-native architecture with microservices design
-        - RESTful APIs for integration with existing systems
-        - Real-time processing with sub-second response times
-        - Scalable infrastructure supporting future growth
-        - Comprehensive logging and monitoring capabilities
-        
-        Success Criteria:
-        - 95%+ routing accuracy within 3 months of deployment
-        - 50% reduction in manual email sorting time
-        - Seamless integration with zero downtime
-        - User satisfaction score of 4.5/5 or higher
-        
-        Timeline: 3 months for MVP, 6 months for full implementation with advanced features.
-        Team: 5 senior developers, 2 project managers, 1 product manager, 1 DevOps engineer, 2 QA engineers.
-        Budget: $500,000 for development and first year operations.
-        """
-        
-        context = {
-            'project_type': 'software_development',
-            'complexity': 'high',
-            'team_size': 11,
-            'timeline': '6 months',
-            'budget': '$500,000',
-            'company': 'InnovateNext Solutions',
-            'priority': 'high',
-            'evaluation_criteria': ['technical_feasibility', 'scalability', 'security', 'user_experience', 'integration_complexity'],
-            'constraints': {
-                'compliance_requirements': ['GDPR', 'SOX'],
-                'performance_requirements': ['10,000+ emails/day', 'sub-second response'],
-                'integration_requirements': ['Jira', 'Asana', 'Microsoft Project']
-            }
-        }
-        
-        return self.process_project_request(email_router_request, context)
-    
-    def generate_workflow_report(self, results: Dict[str, Any]) -> str:
-        """Generate a comprehensive report of the workflow execution"""
-        if not results.get("workflow_execution"):
-            return "Error: Invalid workflow results provided"
-        
-        workflow_exec = results["workflow_execution"]
-        agent_coord = results.get("agent_coordination", {})
-        deliverables = results.get("deliverables", {})
-        quality_metrics = results.get("quality_metrics", {})
-        
-        report = f"""
-# Enhanced AI-Powered Agentic Workflow Report
-**Generated:** {workflow_exec.get('timestamp', 'Unknown')}
-**Workflow ID:** {workflow_exec.get('id', 'Unknown')}
-**Workflow Type:** {workflow_exec.get('type', 'Unknown')}
-**Status:** {workflow_exec.get('status', 'Unknown')}
-**Overall Confidence:** {workflow_exec.get('overall_confidence', 0.0):.2f}
-**Execution Time:** {workflow_exec.get('execution_time_seconds', 0):.1f} seconds
+        # Store in workflow history
+        self.workflow_history.append({
+            "id": workflow_id,
+            "timestamp": structured_output["workflow_execution"]["timestamp"],
+            "status": status,
+            "confidence": structured_output["workflow_execution"]["overall_confidence"]
+        })
 
-## Request Analysis
-**Original Request:** {results.get('request_analysis', {}).get('original_request', 'Not available')[:200]}...
-
-**Complexity Assessment:** {results.get('request_analysis', {}).get('complexity_assessment', 'Unknown')}
-
-## Agent Coordination Summary
-**Agents Involved:** {', '.join(agent_coord.get('agents_involved', []))}
-**Processing Steps:** {agent_coord.get('processing_steps', 0)}
-**Coordination Pattern:** {agent_coord.get('coordination_pattern', 'Unknown')}
-
-## Primary Deliverables
-{deliverables.get('primary_output', 'No primary output available')[:1000]}...
-
-## Quality Assessment
-**Overall Quality Score:** {quality_metrics.get('overall_score', 0.0):.1f}/10
-**Confidence Distribution:** {quality_metrics.get('confidence_distribution', [])}
-
-## Key Recommendations
-"""
-        
-        recommendations = deliverables.get('recommendations', [])
-        if recommendations:
-            for i, rec in enumerate(recommendations[:5], 1):
-                report += f"{i}. {rec}\n"
-        else:
-            report += "No specific recommendations generated.\n"
-        
-        report += f"""
-## Next Steps
-"""
-        
-        next_steps = deliverables.get('next_steps', [])
-        if next_steps:
-            for i, step in enumerate(next_steps[:5], 1):
-                report += f"{i}. {step}\n"
-        else:
-            report += "No specific next steps identified.\n"
-        
-        report += f"""
-## Workflow Performance Metrics
-- **Processing Efficiency:** {workflow_exec.get('performance_category', 'Unknown')}
-- **Agent Utilization:** {len(agent_coord.get('agents_involved', []))} agents coordinated
-- **Success Rate:** {'100%' if workflow_exec.get('status') == 'completed' else 'Failed'}
-
-## System Information
-- **Workflow Version:** {results.get('metadata', {}).get('system_info', {}).get('version', 'Unknown')}
-- **Capabilities:** {results.get('metadata', {}).get('system_info', {}).get('capabilities', 'Unknown')}
-
----
-*This report was generated by the Enhanced AI-Powered Agentic Workflow System*
-"""
-        
-        return report
-
-def convert_to_json_serializable(obj):
-    """Convert AgentResponse objects and other non-serializable objects to JSON serializable format"""
-    if hasattr(obj, '__dict__'):
-        # Convert objects with __dict__ to dictionary
-        return {key: convert_to_json_serializable(value) for key, value in obj.__dict__.items()}
-    elif isinstance(obj, dict):
-        return {key: convert_to_json_serializable(value) for key, value in obj.items()}
-    elif isinstance(obj, list):
-        return [convert_to_json_serializable(item) for item in obj]
-    elif isinstance(obj, (str, int, float, bool, type(None))):
-        return obj
-    else:
-        # For other types, convert to string representation
-        return str(obj)
-
+# Main execution function for compatibility
 def main():
-    """Main function to demonstrate the enhanced agentic workflow"""
-    print("🤖 Initializing Enhanced AI-Powered Agentic Workflow for Project Management")
-    print("=" * 80)
-    
-    # Initialize the enhanced workflow
+    """Main execution function"""
     workflow = AgenticProjectManagementWorkflow()
     
-    # Process the Email Router project with comprehensive capabilities
-    print("📧 Processing Email Router Project with Enhanced Workflow...")
-    results = workflow.handle_email_router_project()
+    # Example usage
+    test_request = "Create a comprehensive project plan for developing an email routing system"
+    test_context = {
+        "priority": "high",
+        "timeline": "3 months",
+        "resources": "development team of 5",
+        "complexity": "high"
+    }
     
-    # Generate and display comprehensive report
-    print("\n📊 Generating Comprehensive Workflow Report...")
-    report = workflow.generate_workflow_report(results)
-    
-    # Save results in multiple formats
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    
-    # Save structured JSON output (convert AgentResponse objects to dicts)
-    json_filename = f'enhanced_workflow_results_{timestamp}.json'
-    json_serializable_results = convert_to_json_serializable(results)
-    with open(json_filename, 'w') as f:
-        json.dump(json_serializable_results, f, indent=2)
-    
-    # Save comprehensive report
-    report_filename = f'enhanced_workflow_report_{timestamp}.md'
-    with open(report_filename, 'w') as f:
-        f.write(report)
-    
-    # Display summary
-    print(f"\n✅ Enhanced Workflow completed successfully!")
-    print(f"📊 Overall confidence: {results['workflow_execution']['overall_confidence']:.2f}")
-    print(f"⏱️  Execution time: {results['workflow_execution'].get('execution_time_seconds', 0):.1f} seconds")
-    print(f"🤖 Agents coordinated: {len(results['agent_coordination']['agents_involved'])}")
-    print(f"📁 Structured results saved to: {json_filename}")
-    print(f"📄 Comprehensive report saved to: {report_filename}")
-    
-    # Display quality metrics if available
-    if results.get('quality_metrics', {}).get('overall_score'):
-        print(f"🎯 Quality score: {results['quality_metrics']['overall_score']:.1f}/10")
-    
-    print("\n🎉 Enhanced Agentic Workflow demonstration completed!")
-    return results
+    result = workflow.process_project_request(test_request, test_context)
+    print(json.dumps(result, indent=2))
 
 if __name__ == "__main__":
     main()
+

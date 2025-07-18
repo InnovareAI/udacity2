@@ -1,4 +1,5 @@
 
+
 """
 Routing Agent - Enhanced intelligent task routing with comprehensive analysis
 """
@@ -276,6 +277,21 @@ Always provide detailed reasoning, confidence scores, and actionable recommendat
             reasoning=f"Analyzed task using {len(task_analysis['patterns'])} patterns and recommended {routing_decision['primary_agent']} with {confidence_score:.2f} confidence"
         )
     
+    def route(self, task_description: str, context: str = "", priority: str = "medium") -> AgentResponse:
+        """
+        Main route method for Udacity specification compliance
+        
+        Args:
+            task_description: Description of the task to route
+            context: Additional context about the task
+            priority: Task priority level
+        """
+        return self.process({
+            'task_description': task_description,
+            'context': context,
+            'priority': priority
+        })
+    
     def _analyze_task_comprehensively(self, task_description: str, context: str) -> Dict[str, Any]:
         """Perform comprehensive task analysis for routing"""
         combined_text = f"{task_description} {context}".lower()
@@ -518,3 +534,13 @@ Always provide detailed reasoning, confidence scores, and actionable recommendat
             'success_rates': {},
             'optimization_opportunities': []
         }
+    
+    # Additional methods for test compatibility
+    def route_task(self, task_description: str, context: str = "", priority: str = "medium") -> AgentResponse:
+        """Route a specific task with enhanced analysis - alias for compatibility"""
+        return self.process({
+            'task_description': task_description,
+            'context': context,
+            'priority': priority
+        })
+

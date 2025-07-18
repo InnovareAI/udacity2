@@ -330,3 +330,24 @@ Always provide concrete deliverables, success criteria, and progress tracking me
     def add_custom_template(self, project_type: str, template: Dict[str, Any]):
         """Add custom planning template"""
         self.planning_templates[project_type] = template
+    
+    # Additional methods for test compatibility
+    def break_down_task(self, task_description: str, context: str = "") -> AgentResponse:
+        """Break down a task into actionable steps - alias for compatibility"""
+        return self.process({
+            'goal': task_description,
+            'project_type': 'general',
+            'context': context,
+            'complexity': 'medium'
+        })
+    
+    def create_project_plan(self, project_description: str, project_type: str = "general", context: Dict[str, Any] = None) -> AgentResponse:
+        """Create a comprehensive project plan - alias for compatibility"""
+        context = context or {}
+        return self.process({
+            'goal': project_description,
+            'project_type': project_type,
+            'timeline': context.get('timeline', 'flexible'),
+            'resources': context.get('resources', 'to_be_determined'),
+            'complexity': context.get('complexity', 'medium')
+        })
