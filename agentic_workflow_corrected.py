@@ -226,7 +226,7 @@ class AgenticWorkflow:
                 "knowledge_base": self.product_manager_knowledge,
                 "task_type": "user_story_generation"
             }
-            knowledge_response = self.product_manager_knowledge_agent.process(knowledge_input)
+            knowledge_response = self.product_manager_knowledge_agent.respond(knowledge_input.get("task_description", ""), knowledge_input)
             
             # Pass the response to the process() method of the corresponding EvaluationAgent
             evaluation_input = {
@@ -235,7 +235,7 @@ class AgenticWorkflow:
                 "criteria": self.product_manager_eval_criteria,
                 "persona": self.product_manager_eval_persona
             }
-            evaluation_result = self.product_manager_eval_agent.process(evaluation_input)
+            evaluation_result = self.product_manager_eval_agent.evaluate(evaluation_input.get("item_to_evaluate", ""), evaluation_input.get("evaluation_type", "general"), "1-10", "")
             
             # Return the final, validated response
             return {
@@ -266,16 +266,16 @@ class AgenticWorkflow:
                 "knowledge_base": self.program_manager_knowledge,
                 "task_type": "product_feature_definition"
             }
-            knowledge_response = self.program_manager_knowledge_agent.process(knowledge_input)
+            knowledge_response = self.program_manager_knowledge_agent.respond(knowledge_input.get("task_description", ""), knowledge_input)
             
-            # Pass the response to the process() method of the corresponding EvaluationAgent
+            # Pass the response to the evaluate() method of the corresponding EvaluationAgent
             evaluation_input = {
                 "item_to_evaluate": knowledge_response.content,
                 "evaluation_type": "product_features",
                 "criteria": self.program_manager_eval_criteria,
                 "persona": self.program_manager_eval_persona
             }
-            evaluation_result = self.program_manager_eval_agent.process(evaluation_input)
+            evaluation_result = self.program_manager_eval_agent.evaluate(evaluation_input.get("item_to_evaluate", ""), evaluation_input.get("evaluation_type", "general"), "1-10", "")
             
             # Return the final, validated response
             return {
@@ -306,16 +306,16 @@ class AgenticWorkflow:
                 "knowledge_base": self.dev_engineer_knowledge,
                 "task_type": "engineering_task_definition"
             }
-            knowledge_response = self.dev_engineer_knowledge_agent.process(knowledge_input)
+            knowledge_response = self.dev_engineer_knowledge_agent.respond(knowledge_input.get("task_description", ""), knowledge_input)
             
-            # Pass the response to the process() method of the corresponding EvaluationAgent
+            # Pass the response to the evaluate() method of the corresponding EvaluationAgent
             evaluation_input = {
                 "item_to_evaluate": knowledge_response.content,
                 "evaluation_type": "engineering_tasks",
                 "criteria": self.dev_engineer_eval_criteria,
                 "persona": self.dev_engineer_eval_persona
             }
-            evaluation_result = self.dev_engineer_eval_agent.process(evaluation_input)
+            evaluation_result = self.dev_engineer_eval_agent.evaluate(evaluation_input.get("item_to_evaluate", ""), evaluation_input.get("evaluation_type", "general"), "1-10", "")
             
             # Return the final, validated response
             return {
@@ -348,7 +348,7 @@ class AgenticWorkflow:
                 "project_type": "email_router_system",
                 "context": "Product specification based planning"
             }
-            action_plan_response = self.action_planning_agent.process(action_plan_input)
+            action_plan_response = self.action_planning_agent.respond(workflow_prompt, action_plan_input)
             
             # Extract workflow_steps from the action plan response
             workflow_steps = self._extract_workflow_steps(action_plan_response.content)
@@ -366,7 +366,7 @@ class AgenticWorkflow:
                     "task_description": step,
                     "context": f"Step {i} of workflow execution"
                 }
-                routing_response = self.routing_agent.process(routing_input)
+                routing_response = self.routing_agent.route(routing_input)
                 
                 # Execute the routed task using the appropriate support function
                 routed_result = self._execute_routed_step(step, routing_response)

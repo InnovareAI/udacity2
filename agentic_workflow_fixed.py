@@ -139,7 +139,7 @@ class EnhancedAgenticWorkflow:
         
         try:
             if step_name == "routing_analysis":
-                result = self.routing_agent.process(step_data)
+                result = self.routing_agent.route(step_data)
                 agent_used = "RoutingAgent"
                 
             elif step_name == "primary_processing":
@@ -147,25 +147,22 @@ class EnhancedAgenticWorkflow:
                 agent = self.agents.get(agent_name, self.agents['DirectPromptAgent'])
                 
                 if agent_name == 'ActionPlanningAgent':
-                    result = agent.process({
+                    result = agent.respond(step_data['request'], {
                         'goal': step_data['request'],
                         'user_prompt': step_data['request'],
                         'context': step_data.get('context', {})
                     })
                 elif agent_name == 'EvaluationAgent':
-                    result = agent.process({
-                        'item_to_evaluate': step_data['request'],
-                        'evaluation_type': 'project_deliverable'
-                    })
+                    result = agent.evaluate(step_data['request'], 'project_deliverable', '1-10', '')
                 else:
-                    result = agent.process({
+                    result = agent.respond(step_data['request'], {
                         'request': step_data['request'],
                         'context': step_data.get('context', {})
                     })
                 agent_used = agent_name
                 
             elif step_name == "quality_evaluation":
-                result = self.agents['EvaluationAgent'].process(step_data)
+                result = self.agents['EvaluationAgent'].evaluate(step_data.get('request', ''), 'quality_assessment', '1-10', '')
                 agent_used = "EvaluationAgent"
                 
             elif step_name == "support_integration":
@@ -332,48 +329,198 @@ class EnhancedAgenticWorkflow:
             }
         }
     
-    def _extract_user_stories(self, content: str) -> List[str]:
-        """Extract user stories from content"""
-        # Simple extraction - in real implementation would use more sophisticated NLP
+    def _extract_user_stories(self, content: str) -> List[Dict[str, Any]]:
+        """Extract structured user stories from content"""
         stories = []
         lines = content.split('\n')
+        story_id = 1
+        
         for line in lines:
             if 'user' in line.lower() and ('want' in line.lower() or 'need' in line.lower()):
-                stories.append(line.strip())
+                stories.append({
+                    "id": f"US-{story_id:03d}",
+                    "title": f"User Story {story_id}",
+                    "description": line.strip(),
+                    "priority": "Medium",
+                    "status": "Draft",
+                    "acceptance_criteria": [
+                        "Feature meets user requirements",
+                        "Implementation is tested and validated",
+                        "User interface is intuitive and accessible"
+                    ],
+                    "estimated_effort": "Medium",
+                    "business_value": "High"
+                })
+                story_id += 1
         
-        # Add default stories if none found
+        # Add comprehensive default stories if none found
         if not stories:
-            stories = [
-                "As a user, I want to access the system efficiently",
-                "As an admin, I want to manage system configurations",
-                "As a stakeholder, I want to view progress reports"
+            default_stories = [
+                {
+                    "id": "US-001",
+                    "title": "System Access",
+                    "description": "As a user, I want to access the system efficiently so that I can complete my tasks quickly",
+                    "priority": "High",
+                    "status": "Draft",
+                    "acceptance_criteria": [
+                        "User can log in within 3 seconds",
+                        "System provides clear navigation",
+                        "Access is secure and authenticated"
+                    ],
+                    "estimated_effort": "Medium",
+                    "business_value": "High"
+                },
+                {
+                    "id": "US-002", 
+                    "title": "System Administration",
+                    "description": "As an admin, I want to manage system configurations so that I can maintain optimal performance",
+                    "priority": "High",
+                    "status": "Draft",
+                    "acceptance_criteria": [
+                        "Admin panel is accessible and secure",
+                        "Configuration changes are logged",
+                        "System performance is monitored"
+                    ],
+                    "estimated_effort": "High",
+                    "business_value": "Medium"
+                },
+                {
+                    "id": "US-003",
+                    "title": "Progress Reporting",
+                    "description": "As a stakeholder, I want to view progress reports so that I can track project status",
+                    "priority": "Medium",
+                    "status": "Draft",
+                    "acceptance_criteria": [
+                        "Reports are generated automatically",
+                        "Data is accurate and up-to-date",
+                        "Reports are accessible to authorized users"
+                    ],
+                    "estimated_effort": "Medium",
+                    "business_value": "High"
+                }
             ]
+            stories = default_stories
         
-        return stories[:5]  # Limit to 5 stories
+        return stories[:8]  # Limit to 8 structured stories
     
-    def _extract_product_features(self, content: str) -> List[str]:
-        """Extract product features from content"""
+    def _extract_product_features(self, content: str) -> List[Dict[str, Any]]:
+        """Extract structured product features from content"""
         features = []
         lines = content.split('\n')
+        feature_id = 1
+        
         for line in lines:
             if any(keyword in line.lower() for keyword in ['feature', 'functionality', 'capability', 'component']):
-                features.append(line.strip())
+                features.append({
+                    "id": f"PF-{feature_id:03d}",
+                    "name": f"Product Feature {feature_id}",
+                    "description": line.strip(),
+                    "category": "Core Functionality",
+                    "priority": "Medium",
+                    "complexity": "Medium",
+                    "dependencies": [],
+                    "acceptance_criteria": [
+                        "Feature is fully implemented",
+                        "Feature passes all tests",
+                        "Feature meets performance requirements"
+                    ],
+                    "estimated_effort": "Medium",
+                    "business_impact": "High"
+                })
+                feature_id += 1
         
-        # Add default features if none found
+        # Add comprehensive default features if none found
         if not features:
-            features = [
-                "Core system functionality",
-                "User interface components",
-                "Data management features",
-                "Integration capabilities",
-                "Security and authentication"
+            default_features = [
+                {
+                    "id": "PF-001",
+                    "name": "Core System Functionality",
+                    "description": "Essential system operations and core business logic implementation",
+                    "category": "Core Functionality",
+                    "priority": "High",
+                    "complexity": "High",
+                    "dependencies": [],
+                    "acceptance_criteria": [
+                        "All core operations are functional",
+                        "System handles expected load",
+                        "Error handling is comprehensive"
+                    ],
+                    "estimated_effort": "High",
+                    "business_impact": "Critical"
+                },
+                {
+                    "id": "PF-002",
+                    "name": "User Interface Components",
+                    "description": "Responsive and intuitive user interface with modern design patterns",
+                    "category": "User Experience",
+                    "priority": "High",
+                    "complexity": "Medium",
+                    "dependencies": ["PF-001"],
+                    "acceptance_criteria": [
+                        "UI is responsive across devices",
+                        "Interface follows design guidelines",
+                        "Accessibility standards are met"
+                    ],
+                    "estimated_effort": "Medium",
+                    "business_impact": "High"
+                },
+                {
+                    "id": "PF-003",
+                    "name": "Data Management Features",
+                    "description": "Comprehensive data storage, retrieval, and management capabilities",
+                    "category": "Data Management",
+                    "priority": "High",
+                    "complexity": "High",
+                    "dependencies": ["PF-001"],
+                    "acceptance_criteria": [
+                        "Data integrity is maintained",
+                        "Performance meets requirements",
+                        "Backup and recovery systems work"
+                    ],
+                    "estimated_effort": "High",
+                    "business_impact": "Critical"
+                },
+                {
+                    "id": "PF-004",
+                    "name": "Integration Capabilities",
+                    "description": "APIs and integration points for external system connectivity",
+                    "category": "Integration",
+                    "priority": "Medium",
+                    "complexity": "Medium",
+                    "dependencies": ["PF-001", "PF-003"],
+                    "acceptance_criteria": [
+                        "APIs are well-documented",
+                        "Integration is secure and reliable",
+                        "Error handling for external failures"
+                    ],
+                    "estimated_effort": "Medium",
+                    "business_impact": "High"
+                },
+                {
+                    "id": "PF-005",
+                    "name": "Security and Authentication",
+                    "description": "Comprehensive security framework with multi-factor authentication",
+                    "category": "Security",
+                    "priority": "Critical",
+                    "complexity": "High",
+                    "dependencies": [],
+                    "acceptance_criteria": [
+                        "Security standards are met",
+                        "Authentication is robust",
+                        "Data protection is comprehensive"
+                    ],
+                    "estimated_effort": "High",
+                    "business_impact": "Critical"
+                }
             ]
+            features = default_features
         
-        return features[:5]  # Limit to 5 features
+        return features[:8]  # Limit to 8 structured features
     
-    def _extract_engineering_tasks(self, support_analysis: Dict[str, Any]) -> List[str]:
-        """Extract engineering tasks from support analysis"""
+    def _extract_engineering_tasks(self, support_analysis: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Extract structured engineering tasks from support analysis"""
         tasks = []
+        task_id = 1
         
         # Extract from development engineer analysis
         dev_analysis = support_analysis.get('development_engineer', {})
@@ -381,23 +528,160 @@ class EnhancedAgenticWorkflow:
             tech_tasks = dev_analysis.get('technical_tasks', [])
             for task in tech_tasks:
                 if isinstance(task, dict):
-                    tasks.append(task.get('task', str(task)))
+                    tasks.append({
+                        "id": f"ET-{task_id:03d}",
+                        "title": task.get('task', f"Engineering Task {task_id}"),
+                        "description": task.get('description', task.get('task', '')),
+                        "category": task.get('category', 'Development'),
+                        "priority": task.get('priority', 'Medium'),
+                        "complexity": task.get('complexity', 'Medium'),
+                        "estimated_hours": task.get('estimated_hours', 8),
+                        "dependencies": task.get('dependencies', []),
+                        "skills_required": task.get('skills_required', ['Programming']),
+                        "acceptance_criteria": task.get('acceptance_criteria', [
+                            "Task is completed according to specifications",
+                            "Code passes all tests",
+                            "Documentation is updated"
+                        ])
+                    })
                 else:
-                    tasks.append(str(task))
+                    tasks.append({
+                        "id": f"ET-{task_id:03d}",
+                        "title": str(task),
+                        "description": str(task),
+                        "category": "Development",
+                        "priority": "Medium",
+                        "complexity": "Medium",
+                        "estimated_hours": 8,
+                        "dependencies": [],
+                        "skills_required": ["Programming"],
+                        "acceptance_criteria": [
+                            "Task is completed according to specifications",
+                            "Code passes all tests",
+                            "Documentation is updated"
+                        ]
+                    })
+                task_id += 1
         
-        # Add default tasks if none found
+        # Add comprehensive default tasks if none found
         if not tasks:
-            tasks = [
-                "Set up development environment",
-                "Implement core business logic",
-                "Develop user interface components",
-                "Create database schema and models",
-                "Implement API endpoints",
-                "Set up testing framework",
-                "Configure deployment pipeline"
+            default_tasks = [
+                {
+                    "id": "ET-001",
+                    "title": "Development Environment Setup",
+                    "description": "Configure development environment with necessary tools and dependencies",
+                    "category": "Infrastructure",
+                    "priority": "High",
+                    "complexity": "Low",
+                    "estimated_hours": 4,
+                    "dependencies": [],
+                    "skills_required": ["DevOps", "System Administration"],
+                    "acceptance_criteria": [
+                        "All development tools are installed",
+                        "Environment variables are configured",
+                        "Team can access shared resources"
+                    ]
+                },
+                {
+                    "id": "ET-002",
+                    "title": "Core Business Logic Implementation",
+                    "description": "Develop the main business logic and core functionality of the system",
+                    "category": "Development",
+                    "priority": "Critical",
+                    "complexity": "High",
+                    "estimated_hours": 40,
+                    "dependencies": ["ET-001"],
+                    "skills_required": ["Backend Development", "System Design"],
+                    "acceptance_criteria": [
+                        "All business rules are implemented",
+                        "Logic is thoroughly tested",
+                        "Performance meets requirements"
+                    ]
+                },
+                {
+                    "id": "ET-003",
+                    "title": "User Interface Development",
+                    "description": "Create responsive and intuitive user interface components",
+                    "category": "Frontend",
+                    "priority": "High",
+                    "complexity": "Medium",
+                    "estimated_hours": 32,
+                    "dependencies": ["ET-002"],
+                    "skills_required": ["Frontend Development", "UI/UX Design"],
+                    "acceptance_criteria": [
+                        "UI is responsive across devices",
+                        "Interface follows design guidelines",
+                        "Accessibility standards are met"
+                    ]
+                },
+                {
+                    "id": "ET-004",
+                    "title": "Database Schema Design",
+                    "description": "Design and implement database schema with proper relationships and constraints",
+                    "category": "Database",
+                    "priority": "High",
+                    "complexity": "Medium",
+                    "estimated_hours": 16,
+                    "dependencies": ["ET-001"],
+                    "skills_required": ["Database Design", "SQL"],
+                    "acceptance_criteria": [
+                        "Schema supports all requirements",
+                        "Performance is optimized",
+                        "Data integrity is maintained"
+                    ]
+                },
+                {
+                    "id": "ET-005",
+                    "title": "API Development",
+                    "description": "Implement RESTful API endpoints for system integration",
+                    "category": "Backend",
+                    "priority": "High",
+                    "complexity": "Medium",
+                    "estimated_hours": 24,
+                    "dependencies": ["ET-002", "ET-004"],
+                    "skills_required": ["API Development", "Backend Development"],
+                    "acceptance_criteria": [
+                        "APIs are well-documented",
+                        "Error handling is comprehensive",
+                        "Security measures are implemented"
+                    ]
+                },
+                {
+                    "id": "ET-006",
+                    "title": "Testing Framework Setup",
+                    "description": "Establish comprehensive testing framework with unit, integration, and e2e tests",
+                    "category": "Quality Assurance",
+                    "priority": "High",
+                    "complexity": "Medium",
+                    "estimated_hours": 20,
+                    "dependencies": ["ET-002"],
+                    "skills_required": ["Test Automation", "Quality Assurance"],
+                    "acceptance_criteria": [
+                        "Test coverage exceeds 80%",
+                        "Automated tests run in CI/CD",
+                        "Test reports are generated"
+                    ]
+                },
+                {
+                    "id": "ET-007",
+                    "title": "Deployment Pipeline Configuration",
+                    "description": "Set up automated deployment pipeline with CI/CD best practices",
+                    "category": "DevOps",
+                    "priority": "Medium",
+                    "complexity": "High",
+                    "estimated_hours": 16,
+                    "dependencies": ["ET-006"],
+                    "skills_required": ["DevOps", "CI/CD", "Cloud Platforms"],
+                    "acceptance_criteria": [
+                        "Automated deployment works reliably",
+                        "Rollback procedures are tested",
+                        "Monitoring and alerting are configured"
+                    ]
+                }
             ]
+            tasks = default_tasks
         
-        return tasks[:7]  # Limit to 7 tasks
+        return tasks[:10]  # Limit to 10 structured tasks
     
     def _format_final_output(self, structured_result: Dict[str, Any], request: str, context: Dict[str, Any]) -> Dict[str, Any]:
         """

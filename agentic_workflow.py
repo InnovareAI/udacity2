@@ -399,7 +399,7 @@ class AgenticProjectManagementWorkflow:
         results['confidence_scores'].append(rag_enhanced.confidence_score)
         
         # Step 3: Comprehensive project management analysis
-        pm_response = self.project_manager.process({
+        pm_response = self.project_manager.respond(rag_enhanced.content, {
             'task_type': 'comprehensive_planning',
             'project_details': rag_enhanced.content,
             'requirements': json.dumps(context),
@@ -456,7 +456,7 @@ class AgenticProjectManagementWorkflow:
         results['confidence_scores'].append(knowledge_enhanced.confidence_score)
         
         # Step 3: Comprehensive action plan creation
-        action_plan = self.action_planning.process({
+        action_plan = self.action_planning.respond(knowledge_enhanced.content, {
             'goal': knowledge_enhanced.content,
             'project_type': context.get('project_type', 'general'),
             'timeline': context.get('timeline', 'flexible'),
@@ -469,7 +469,7 @@ class AgenticProjectManagementWorkflow:
         results['confidence_scores'].append(action_plan.confidence_score)
         
         # Step 4: Project management validation and enhancement
-        pm_validation = self.project_manager.process({
+        pm_validation = self.project_manager.respond(action_plan.content, {
             'task_type': 'plan_validation',
             'project_details': action_plan.content,
             'requirements': 'Validate and enhance the action plan with project management best practices'
@@ -578,7 +578,7 @@ class AgenticProjectManagementWorkflow:
         results['confidence_scores'].append(rag_enhanced.confidence_score)
         
         # Step 4: Project management analysis
-        pm_response = self.project_manager.process({
+        pm_response = self.project_manager.respond(rag_enhanced.content, {
             'task_type': 'comprehensive_analysis',
             'project_details': rag_enhanced.content,
             'requirements': json.dumps(context),
